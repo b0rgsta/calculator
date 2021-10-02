@@ -1,0 +1,70 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.main {
+  background-color: black;
+  width: 375px;
+  height: 667px;
+  border-radius: 40px;
+}
+
+.screen {
+  background-color: #222222;
+  color: lightgray;
+  height: 180px;
+  width: 320px;
+  margin: 10px;
+  font-size: 4rem;
+  text-align: right;
+}
+
+.pad {
+  height: 400px;
+  width: 320px;
+  padding-bottom: 50px;
+}
+
+.pad > :first-child > button {
+  background-color: lightgray;
+  color: black;
+}
+
+.row > button:last-child {
+  background-color: orange;
+  color: lightgray;
+}
+
+button {
+  color: lightgrey;
+  background-color: rgba(56, 52, 45, 0.8);
+  width: 70px;
+  height: 70px;
+  border-radius: 35px;
+  margin: 6px;
+  border-style: none;
+  font-size: 1.6rem;
+  font-family: Verdana;
+}
+
+.long {
+  width: 150px;
+  text-align: left;
+  padding-left: 27px;
+}
+
+/*# sourceMappingURL=main.css.map */
