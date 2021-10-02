@@ -10,13 +10,29 @@ for (let i = 0; i < buttonList.length; i++) {
  */
 function addClickListenerTo(element) {
     console.log("Listening for clicks on " + element.innerText)
-
-    element.addEventListener("click", () => {
-        console.log("Button " + element.innerText + " pressed!!")
-        sendElementToScreen(element)
-    })
+    element.addEventListener("click", ClickListener)
 }
 
+/**
+ * EventListener for all buttons
+ */
+function ClickListener(event) {
+    const button = event.target
+    console.log("Button " + button.innerText + " pressed!!")
+
+    if (button.innerText === "AC") {
+        clearScreen()
+    } else {
+        sendElementToScreen(button)
+    }
+}
+
+/**
+ * This function returns screen to 0.
+ */
+function clearScreen() {
+    sendToScreen("0")
+}
 
 /**
  * This function takes an element and sends its content to the screen
@@ -28,11 +44,16 @@ function sendElementToScreen(element) {
 }
 
 /**
- *  This function appends a new message to the existing message on screen.
- * @param message - The new message being appended to existing message on screen.
+ *  This function appends a new digit to the existing digit on screen replacing 0.
+ * @param {string} digit - The new message being appended to existing message on screen.
  */
-function appendToScreen(message) {
-    document.getElementById("screen").innerText += message
+function appendToScreen(digit) {
+    const screen = document.getElementById("screen")
+    if (screen.innerText !== "0") {
+        screen.innerText += digit
+    } else {
+        screen.innerText = digit
+    }
 }
 
 /**
