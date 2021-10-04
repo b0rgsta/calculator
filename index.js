@@ -1,11 +1,22 @@
+import {appendToScreen, clearScreen, getScreenText, sendToScreen} from "./js/screen.js";
+
 const buttonList = document.getElementsByTagName("button");
 
 for (let i = 0; i < buttonList.length; i++) {
     addClickListenerTo(buttonList[i])
 }
 
+let value1 = ""
+let value2 = ""
+let op = ""
+let firstOfSecondLotOfNumbersPressed = false
+
+const NUMBERS = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."]
+const BINARY_OPERATORS = ["x", "-", "/", "+"]
+const UNARY_OPERATORS = ["1/x", "+/-"]
+
 /**
- * This function adds a click listener to an element which sends it to the screen when clicked.
+ * Adds a click listener to an element which sends its content to the screen when clicked.
  * @param element
  */
 function addClickListenerTo(element) {
@@ -20,47 +31,87 @@ function ClickListener(event) {
     const button = event.target
     console.log("Button " + button.innerText + " pressed!!")
 
-    if (button.innerText === "AC") {
+    const buttonText = button.innerText
+    const operatorButtons = document.getElementsByClassName("operators")
+
+    Array.from(operatorButtons).forEach((button) => {
+        button.classList.remove("selected")
+    })
+
+    if (buttonText === "AC") {
         clearScreen()
-    } else {
-        sendElementToScreen(button)
+        value1 = ""
+        value2 = ""
+        op = ""
+        firstOfSecondLotOfNumbersPressed = false
+
+    } else if (BINARY_OPERATORS.includes(buttonText)) {
+        button.classList.add("selected")
+        op = buttonText
+        value1 = getScreenText()
+
+    } else if (NUMBERS.includes(buttonText)) {
+        if (buttonText === "." && getScreenText().includes(".")) {
+            return
+        }
+        if (value1 && firstOfSecondLotOfNumbersPressed === false) {
+            clearScreen()
+            firstOfSecondLotOfNumbersPressed = true
+        }
+        if (value2 && !value1) {
+            clearScreen()
+            value2 = ""
+        }
+
+
+        appendToScreen(buttonText)
+    } else if (buttonText === "=") {
+        if (value1 && op) {
+            value2 = getScreenText()
+            const calcInputs = createBinaryObject(value1, op, value2)
+            sendToScreen(calcValue(calcInputs))
+            value1 = ""
+            op = ""
+            firstOfSecondLotOfNumbersPressed = false
+        }
+
+
+    } else if (UNARY_OPERATORS.includes(buttonText)) {
+        if (buttonText === "+/-") {
+            sendToScreen(-Number(getScreenText()))
+        } else {
+            sendToScreen(1 / Number(getScreenText()))
+        }
     }
 }
 
+
 /**
- * This function returns screen to 0.
+ * Creates an object with 2 values and an operator.
+ * @param {string} string1
+ * @param {string} op
+ * @param {string} string2
+ * @return {{ value1: number, value2: number, operator: string}}
  */
-function clearScreen() {
-    sendToScreen("0")
+const createBinaryObject = (string1, op, string2) => {
+    return {value1: Number(string1), operator: op, value2: Number(string2)}
 }
 
 /**
- * This function takes an element and sends its content to the screen
- * @param element - The element
+ * Given an operation object, perform the calculation and return the result.
+ *
+ * @param {{value1: number, operator: string, value2: number}} operationObject
+ * @return {number} result of operation
  */
-function sendElementToScreen(element) {
-    const buttonContent = element.innerText
-    appendToScreen(buttonContent)
-}
-
-/**
- *  This function appends a new digit to the existing digit on screen replacing 0.
- * @param {string} digit - The new message being appended to existing message on screen.
- */
-function appendToScreen(digit) {
-    const screen = document.getElementById("screen")
-    if (screen.innerText !== "0") {
-        screen.innerText += digit
-    } else {
-        screen.innerText = digit
+const calcValue = (operationObject) => {
+    switch (operationObject.operator) {
+        case "-":
+            return operationObject.value1 - operationObject.value2
+        case "x":
+            return operationObject.value1 * operationObject.value2
+        case "/":
+            return operationObject.value1 / operationObject.value2
+        case "+":
+            return operationObject.value1 + operationObject.value2
     }
 }
-
-/**
- * This function takes a message and sends it to the screen
- * @param message - The string being passed to screen
- */
-function sendToScreen(message) {
-    document.getElementById("screen").innerText = message
-}
-
