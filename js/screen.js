@@ -6,21 +6,12 @@ export function clearScreen() {
 }
 
 /**
- * This function takes an element and sends its content to the screen
- * @param element - The element
- */
-export function appendElementTextToScreen(element) {
-    const buttonContent = element.innerText
-    appendToScreen(buttonContent)
-}
-
-/**
- *  This function appends a new digit to the existing digit on screen replacing 0.
+ *  This function appends a new digit to the existing number on screen OR replaces 0.
  * @param {string} digit - The new message being appended to existing message on screen.
  */
 export function appendToScreen(digit) {
     const screen = document.getElementById("screen")
-    if (screen.innerText !== "0") {
+    if (screen.innerText !== "0" || digit === ".") {
         screen.innerText += digit
     } else {
         screen.innerText = digit
@@ -32,15 +23,15 @@ export function appendToScreen(digit) {
  * @param message - The string being passed to screen
  */
 export function sendToScreen(message) {
-    document.getElementById("screen").innerText = message
+    console.log(message)
+    document.getElementById("screen").innerText = String(message).slice(0,20)
 }
 
 /**
- * This function saves the numbers on screen when an operator button is clicked.
+ * This function returns the number displayed on screen.
  *
  * @return message from screen
  */
-
 export function getScreenText() {
     return document.getElementById("screen").innerText
 }

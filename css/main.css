@@ -24,15 +24,19 @@
 }
 
 .screen {
-  background-color: #222222;
-  color: lightgray;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: black;
+  color: whitesmoke;
   height: 180px;
   width: 320px;
   margin: 10px;
   font-size: 4rem;
-  text-align: right;
+  text-align: end;
   overflow-wrap: anywhere;
-  word-wrap: normal;
+  word-break: normal;
+  justify-content: end;
 }
 
 .pad {
@@ -42,17 +46,21 @@
 }
 
 .pad > :first-child > button {
-  background-color: lightgray;
+  background-color: whitesmoke;
   color: black;
 }
 
 .row > button:last-child {
   background-color: orange;
-  color: lightgray;
+  color: whitesmoke;
+}
+.row > button:last-child.selected {
+  background-color: whitesmoke;
+  color: orange;
 }
 
 button {
-  color: lightgrey;
+  color: whitesmoke;
   background-color: rgba(56, 52, 45, 0.8);
   width: 70px;
   height: 70px;
@@ -60,7 +68,7 @@ button {
   margin: 6px;
   border-style: none;
   font-size: 1.6rem;
-  font-family: Verdana;
+  font-family: Verdana, Tahoma, sans-serif;
 }
 
 .long {

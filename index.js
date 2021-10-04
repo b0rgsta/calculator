@@ -16,7 +16,7 @@ const BINARY_OPERATORS = ["x", "-", "/", "+"]
 const UNARY_OPERATORS = ["1/x", "+/-"]
 
 /**
- * This function adds a click listener to an element which sends it to the screen when clicked.
+ * Adds a click listener to an element which sends its content to the screen when clicked.
  * @param element
  */
 function addClickListenerTo(element) {
@@ -32,6 +32,11 @@ function ClickListener(event) {
     console.log("Button " + button.innerText + " pressed!!")
 
     const buttonText = button.innerText
+    const operatorButtons = document.getElementsByClassName("operators")
+
+    Array.from(operatorButtons).forEach((button) => {
+        button.classList.remove("selected")
+    })
 
     if (buttonText === "AC") {
         clearScreen()
@@ -41,11 +46,13 @@ function ClickListener(event) {
         firstOfSecondLotOfNumbersPressed = false
 
     } else if (BINARY_OPERATORS.includes(buttonText)) {
+        button.classList.add("selected")
         op = buttonText
         value1 = getScreenText()
+
     } else if (NUMBERS.includes(buttonText)) {
-        if (buttonText === ".") {
-            !getScreenText().includes(".")
+        if (buttonText === "." && getScreenText().includes(".")) {
+            return
         }
         if (value1 && firstOfSecondLotOfNumbersPressed === false) {
             clearScreen()
@@ -55,6 +62,8 @@ function ClickListener(event) {
             clearScreen()
             value2 = ""
         }
+
+
         appendToScreen(buttonText)
     } else if (buttonText === "=") {
         if (value1 && op) {
@@ -67,6 +76,12 @@ function ClickListener(event) {
         }
 
 
+    } else if (UNARY_OPERATORS.includes(buttonText)) {
+        if (buttonText === "+/-") {
+            sendToScreen(-Number(getScreenText()))
+        } else {
+            sendToScreen(1 / Number(getScreenText()))
+        }
     }
 }
 
@@ -83,7 +98,7 @@ const createBinaryObject = (string1, op, string2) => {
 }
 
 /**
- * Given an operation object, perform it and return
+ * Given an operation object, perform the calculation and return the result.
  *
  * @param {{value1: number, operator: string, value2: number}} operationObject
  * @return {number} result of operation
@@ -100,5 +115,3 @@ const calcValue = (operationObject) => {
             return operationObject.value1 + operationObject.value2
     }
 }
-
-
